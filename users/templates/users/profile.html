@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+  .card-custom {
+    border-radius: 1.25rem;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  .card-custom:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="mb-5 text-center">
+    <h1 class="display-4 fw-bold text-primary">Welcome back, {{ request.user.first_name|default:request.user.username }} 👋</h1>
+    <p class="text-muted">Here's a quick look at your library activity</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card card-custom border-0 shadow-sm">
+        <img src="{% static 'dashboard/booth.jpg' %}" class="card-img-top rounded-top" alt="Booth Bookings">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-semibold">Your Booth Bookings</h5>
+          <p class="display-6 fw-bold text-primary mb-3">{{ booth_count }}</p>
+          <a href="{% url 'booths-book' %}" class="btn btn-primary w-100">Book New</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom border-0 shadow-sm">
+        <img src="{% static 'dashboard/visit.jpg' %}" class="card-img-top rounded-top" alt="Visit Bookings">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-semibold">Scheduled Visits</h5>
+          <p class="display-6 fw-bold text-success mb-3">{{ visit_count }}</p>
+          <a href="{% url 'book-visit' %}" class="btn btn-success w-100">Book Visit</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-custom border-0 shadow-sm">
+        <img src="{% static 'dashboard/payment.jpg' %}" class="card-img-top rounded-top" alt="Payments">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-semibold">Total Payments</h5>
+          <p class="display-6 fw-bold text-warning mb-3">{{ payment_total }}</p>
+          <a href="{% url 'make-payment' %}" class="btn btn-warning w-100 text-white">Make Payment</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5 p-5 bg-white shadow-lg rounded-4 border-start border-4 border-primary position-relative">
+    <h4 class="mb-4 fw-bold text-primary">
+      <i class="fas fa-user-circle me-2"></i> Your Account Details
+    </h4>
+    <ul class="list-unstyled fs-6 text-muted">
+      <li class="mb-2">
+        <i class="fas fa-user me-2 text-dark"></i> <strong>Username:</strong> {{ request.user.username }}
+      </li>
+      <li class="mb-2">
+        <i class="fas fa-envelope me-2 text-dark"></i> <strong>Email:</strong> {{ request.user.email }}
+      </li>
+      <li class="mb-3">
+        <i class="fas fa-calendar-alt me-2 text-dark"></i> <strong>Member Since:</strong> {{ request.user.date_joined|date:"F j, Y" }}
+      </li>
+    </ul>
+    <a href="{% url 'logout' %}" class="btn btn-danger rounded-pill px-4 py-2 shadow-sm mt-2">
+      <i class="fas fa-sign-out-alt me-2"></i> Logout
+    </a>
+  </div>
+
+  <div class="mt-5 p-5 bg-light shadow-sm rounded-3">
+    <h2 class="mb-4 fw-bold text-success">📅 Your Scheduled Visits</h2>
+    <a href="{% url 'book-visit' %}" class="btn btn-success mb-4">Book a New Visit</a>
+
+    {% if visits and visits|length > 0 %}
+      <ul class="list-group list-group-flush">
+        {% for visit in visits %}
+          <li class="list-group-item bg-white border-start border-4 border-success">
+            <strong>{{ visit.school_name }}</strong><br>
+            <small class="text-muted">Visit Date: {{ visit.visit_date }} | Group Size: {{ visit.group_size }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="alert alert-info" role="alert">
+        You haven’t scheduled any visits yet.
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2 class="text-2xl font-bold mb-4 text-blue-700">📚 Available Reading Booths</h2>
+
+  {% if available_booths %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for booth in available_booths %}
+        <div class="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition">
+          <h3 class="text-lg font-semibold text-gray-800">{{ booth.booth_type }} Booth #{{ booth.booth_number }}</h3>
+          <p class="text-sm text-gray-600 mb-1">📅 Date: {{ booth.date }}</p>
+          <p class="text-sm text-gray-600 mb-1">⏰ Time Slot: {{ booth.time_slot }}</p>
+          <p class="text-sm text-gray-600 mb-1">🏢 Floor: {{ booth.floor }}</p>
+          <p class="text-sm text-green-600 font-bold">{{ booth.is_available|yesno:"Available,Unavailable" }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-red-600 mt-4">No booths available at the moment. Please check back later.</p>
+  {% endif %}
+
+  <div class="mt-6">
+    <a href="{% url 'booths-book' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+      📖 Book a Booth Now
+    </a>
+  </div>
+</div>
+
+{% endblock %}

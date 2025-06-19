@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}  {# Only needed if you use forms here #}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2 class="mb-4">Scheduled Visits</h2>
+     <a href="{% url 'book-visit' %}" class="btn btn-success mt-3">Book a New Visit</a>
+
+    {% if visits %}
+      <ul class="list-group">
+        {% for visit in visits %}
+          <li class="list-group-item">
+            <strong>{{ visit.school_name }}</strong><br>
+            Visit Date: {{ visit.visit_date }}<br>
+            Group Size: {{ visit.group_size }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="alert alert-info" role="alert">
+        No visits scheduled yet.
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

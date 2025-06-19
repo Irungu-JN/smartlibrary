@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Welcome back, {{ user.first_name }} 👋</h2>
+
+  <div class="row text-center">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 mb-4">
+        <img src="{% static 'dashboard/booth.jpg' %}" class="card-img-top" alt="Booth Bookings">
+        <div class="card-body">
+          <h5 class="card-title">Your Booth Bookings</h5>
+          <p class="card-text display-6 text-primary">{{ booth_count }}</p>
+          <a href="{% url 'booths-book' %}" class="btn btn-outline-primary">Book New</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 mb-4">
+        <img src="{% static 'dashboard/visit.jpg' %}" class="card-img-top" alt="Visit Bookings">
+        <div class="card-body">
+          <h5 class="card-title">Scheduled Visits</h5>
+          <p class="card-text display-6 text-success">{{ visit_count }}</p>
+          <a href="{% url 'book-visit' %}" class="btn btn-outline-success">Book Visit</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 mb-4">
+        <img src="{% static 'dashboard/payment.jpg' %}" class="card-img-top" alt="Payments">
+        <div class="card-body">
+          <h5 class="card-title">Total Payments</h5>
+          <p class="card-text display-6 text-warning">{{ payment_total }}</p>
+          <a href="{% url 'make-payment' %}" class="btn btn-outline-warning">Make Payment</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

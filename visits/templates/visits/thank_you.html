@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <div class="card shadow-lg rounded border-success">
+          <div class="card-body">
+            <img src="https://cdn.pixabay.com/photo/2022/08/13/11/51/blue-tit-7383467_1280.jpg" 
+                 alt="Success" class="img-fluid rounded mb-4" style="max-height: 300px;">
+            <h2 class="text-success">Thank You!</h2>
+            <p class="lead">Your visit has been successfully scheduled.</p>
+            <p>We will contact you shortly with more details. We're excited to welcome you to our library!</p>
+            <a href="/users/profile/" class="btn btn-primary mt-3">Back to Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
