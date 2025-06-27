@@ -1,7 +1,86 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Booking Confirmed!</h2>
-<p>Your booth has been successfully booked.</p>
-<a href="{% url 'booths-home' %}">Back to Booths</a>
+<style>
+  body {
+    background: linear-gradient(to right, #fff8dc, #fceabb);
+  }
+
+  .confirmation-card {
+    max-width: 600px;
+    margin: 80px auto;
+    background-color: #fffdf5;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+    animation: fadeInSlide 1s ease-out;
+  }
+
+  .confirmation-card h2 {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 2.5rem;
+    color: #d4af37;
+    margin-bottom: 20px;
+  }
+
+  .confirmation-card p {
+    font-size: 1.2rem;
+    color: #444;
+    margin-bottom: 30px;
+  }
+
+  .animated-icon {
+    font-size: 4rem;
+    color: #d4af37;
+    animation: popIn 0.8s ease forwards;
+  }
+
+  .btn-custom {
+    background-color: #d4af37;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 30px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-custom:hover {
+    background-color: #c19b2d;
+    transform: scale(1.05);
+  }
+
+  @keyframes fadeInSlide {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>
+
+<div class="confirmation-card">
+  <div class="animated-icon">🎉</div>
+  <h2>Booking Confirmed!</h2>
+  <p>Your booth has been successfully booked and reserved just for you.</p>
+
+  <a href="{% url 'payment' %}" class="btn btn-custom w-100 mb-3">💳 Make Payment</a>
+  <a href="{% url 'booths-home' %}" class="btn btn-outline-secondary w-100">← Back to Booths</a>
+</div>
 {% endblock %}

@@ -47,8 +47,9 @@
         <img src="{% static 'dashboard/payment.jpg' %}" class="card-img-top rounded-top" alt="Payments">
         <div class="card-body text-center">
           <h5 class="card-title fw-semibold">Total Payments</h5>
+       
           <p class="display-6 fw-bold text-warning mb-3">{{ payment_total }}</p>
-          <a href="{% url 'make-payment' %}" class="btn btn-warning w-100 text-white">Make Payment</a>
+          <a href="{% url 'payment' %}" class="btn btn-warning w-100 text-white">Make Payment</a>
         </div>
       </div>
     </div>

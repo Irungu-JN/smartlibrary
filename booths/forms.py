@@ -1,5 +1,6 @@
 from django import forms
-from .models import Booth
+from .models import Booth, BOOTH_NUMBER_CHOICES
+from django.utils import timezone
 
 class BoothBookingForm(forms.ModelForm):
     class Meta:
@@ -16,6 +17,37 @@ class BoothBookingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Assuming booth_number is a CharField or IntegerField, not a ForeignKey
-        available_booths = Booth.objects.filter(is_available=True).values_list('booth_number', flat=True).distinct()
-        self.fields['booth_number'].choices = [(num, f'Booth {num}') for num in available_booths]
+        # Set default booth choices to all 20
+        self.fields['booth_number'].choices = BOOTH_NUMBER_CHOICES
+
+        # Pre-highlight today's date
+        self.fields['date'].initial = timezone.now().date()
+
+        # Optionally disable past dates
+        self.fields['date'].widget.attrs['min'] = timezone.now().date().isoformat()
+
+        # Optional: add placeholders
+        self.fields['booth_type'].empty_label = "Select Booth Type"
+        self.fields['booth_number'].empty_label = "Select Booth Number"
+        self.fields['floor'].empty_label = "Select Floor"
+        self.fields['time_slot'].empty_label = "Select Time Slot"
+
+    def clean(self):
+        cleaned_data = super().clean()
+        booth_number = cleaned_data.get('booth_number')
+        date = cleaned_data.get('date')
+        time_slot = cleaned_data.get('time_slot')
+
+        if booth_number and date and time_slot:
+            # Check if booth is already booked at that time
+            existing = Booth.objects.filter(
+                booth_number=booth_number,
+                date=date,
+                time_slot=time_slot
+            ).exists()
+
+            if existing:
+                raise forms.ValidationError(
+                    f"🚫 Booth {booth_number} is already booked for {date} at {time_slot}."
+                )
+        return cleaned_data

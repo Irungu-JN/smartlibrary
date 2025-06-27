@@ -23,7 +23,8 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('booths/', include('booths.urls')),
     path('visits/', include('visits.urls')),
-    path('payments/', include('payments.urls')),
+    #path('payments/', include('payments.urls')),
+    path('payments/', include('mpesa_express.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('', include('home.urls')), 
 
