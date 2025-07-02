@@ -2,87 +2,150 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+
 <style>
-  .card-custom {
-    border-radius: 1.25rem;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  :root {
+    --primary-color: #2c3e50;
+    --accent-color: #00b894;
+    --soft-bg: #f7f9fb;
+    --card-radius: 1.5rem;
   }
+
+  body {
+    background-color: var(--soft-bg);
+  }
+
+  .card-custom {
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    border: none;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+  }
+
   .card-custom:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  }
+
+  .metric-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+  }
+
+  .section-box {
+    padding: 2rem;
+    border-left: 5px solid var(--primary-color);
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+  }
+
+  .list-group-item {
+    border: none;
+    border-left: 5px solid var(--accent-color);
+    background: #fff;
+    border-radius: 0.5rem;
+    margin-bottom: 10px;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+  }
+
+  .btn-rounded {
+    border-radius: 50px;
+    font-weight: 600;
+    padding: 10px 25px;
+  }
+
+  .hero-heading {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+  }
+
+  .fade-in {
+    animation: fadeIn 1.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 
-<div class="container mt-5">
+<div class="container mt-5 fade-in">
   <div class="mb-5 text-center">
-    <h1 class="display-4 fw-bold text-primary">Welcome back, {{ request.user.first_name|default:request.user.username }} 👋</h1>
-    <p class="text-muted">Here's a quick look at your library activity</p>
+    <h1 class="hero-heading">Welcome back, {{ request.user.first_name|default:request.user.username }} 👋</h1>
+    <p class="text-muted">Let’s get you updated on your SmartLibrary activity.</p>
   </div>
 
   <div class="row g-4">
+    <!-- Booth Bookings -->
     <div class="col-md-4">
-      <div class="card card-custom border-0 shadow-sm">
-        <img src="{% static 'dashboard/booth.jpg' %}" class="card-img-top rounded-top" alt="Booth Bookings">
-        <div class="card-body text-center">
-          <h5 class="card-title fw-semibold">Your Booth Bookings</h5>
-          <p class="display-6 fw-bold text-primary mb-3">{{ booth_count }}</p>
-          <a href="{% url 'booths-book' %}" class="btn btn-primary w-100">Book New</a>
+      <div class="card card-custom text-center shadow-sm">
+        <img src="{% static 'dashboard/booth.jpg' %}" class="card-img-top" alt="Booth Bookings">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Booth Bookings</h5>
+          <p class="metric-value text-primary">{{ booth_count }}</p>
+          <a href="{% url 'booths-book' %}" class="btn btn-primary btn-rounded w-100">Book New</a>
         </div>
       </div>
     </div>
 
+    <!-- Visit Bookings -->
     <div class="col-md-4">
-      <div class="card card-custom border-0 shadow-sm">
-        <img src="{% static 'dashboard/visit.jpg' %}" class="card-img-top rounded-top" alt="Visit Bookings">
-        <div class="card-body text-center">
+      <div class="card card-custom text-center shadow-sm">
+        <img src="{% static 'dashboard/visit.jpg' %}" class="card-img-top" alt="Visits">
+        <div class="card-body">
           <h5 class="card-title fw-semibold">Scheduled Visits</h5>
-          <p class="display-6 fw-bold text-success mb-3">{{ visit_count }}</p>
-          <a href="{% url 'book-visit' %}" class="btn btn-success w-100">Book Visit</a>
+          <p class="metric-value text-success">{{ visit_count }}</p>
+          <a href="{% url 'book-visit' %}" class="btn btn-success btn-rounded w-100">Schedule Visit</a>
         </div>
       </div>
     </div>
 
+    <!-- Payments -->
     <div class="col-md-4">
-      <div class="card card-custom border-0 shadow-sm">
-        <img src="{% static 'dashboard/payment.jpg' %}" class="card-img-top rounded-top" alt="Payments">
-        <div class="card-body text-center">
+      <div class="card card-custom text-center shadow-sm">
+        <img src="{% static 'dashboard/payment.jpg' %}" class="card-img-top" alt="Payments">
+        <div class="card-body">
           <h5 class="card-title fw-semibold">Total Payments</h5>
-       
-          <p class="display-6 fw-bold text-warning mb-3">{{ payment_total }}</p>
-          <a href="{% url 'payment' %}" class="btn btn-warning w-100 text-white">Make Payment</a>
+          <p class="metric-value text-warning">{{ payment_total }}</p>
+          <a href="{% url 'payment' %}" class="btn btn-warning text-white btn-rounded w-100">Make Payment</a>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="mt-5 p-5 bg-white shadow-lg rounded-4 border-start border-4 border-primary position-relative">
-    <h4 class="mb-4 fw-bold text-primary">
-      <i class="fas fa-user-circle me-2"></i> Your Account Details
+  <!-- Account Info -->
+  <div class="section-box mt-5">
+    <h4 class="fw-bold text-primary mb-4">
+      <i class="fas fa-user-circle me-2"></i> Account Overview
     </h4>
-    <ul class="list-unstyled fs-6 text-muted">
-      <li class="mb-2">
-        <i class="fas fa-user me-2 text-dark"></i> <strong>Username:</strong> {{ request.user.username }}
-      </li>
-      <li class="mb-2">
-        <i class="fas fa-envelope me-2 text-dark"></i> <strong>Email:</strong> {{ request.user.email }}
-      </li>
-      <li class="mb-3">
-        <i class="fas fa-calendar-alt me-2 text-dark"></i> <strong>Member Since:</strong> {{ request.user.date_joined|date:"F j, Y" }}
-      </li>
+    <ul class="list-unstyled text-muted fs-6">
+      <li class="mb-3"><i class="fas fa-user icon me-2"></i><strong>Username:</strong> {{ request.user.username }}</li>
+      <li class="mb-3"><i class="fas fa-envelope icon me-2"></i><strong>Email:</strong> {{ request.user.email }}</li>
+      <li class="mb-3"><i class="fas fa-calendar-alt icon me-2"></i><strong>Member Since:</strong> {{ request.user.date_joined|date:"F j, Y" }}</li>
     </ul>
-    <a href="{% url 'logout' %}" class="btn btn-danger rounded-pill px-4 py-2 shadow-sm mt-2">
+    <a href="{% url 'logout' %}" class="btn btn-danger btn-rounded shadow-sm mt-3">
       <i class="fas fa-sign-out-alt me-2"></i> Logout
     </a>
   </div>
 
-  <div class="mt-5 p-5 bg-light shadow-sm rounded-3">
-    <h2 class="mb-4 fw-bold text-success">📅 Your Scheduled Visits</h2>
-    <a href="{% url 'book-visit' %}" class="btn btn-success mb-4">Book a New Visit</a>
-
+  <!-- Scheduled Visits -->
+  <div class="mt-5 p-5 bg-white rounded-4 shadow-sm">
+    <h2 class="fw-bold text-success mb-4">📅 Your Scheduled Visits</h2>
+    <a href="{% url 'book-visit' %}" class="btn btn-outline-success btn-rounded mb-3">+ Book New Visit</a>
+    
     {% if visits and visits|length > 0 %}
       <ul class="list-group list-group-flush">
         {% for visit in visits %}
-          <li class="list-group-item bg-white border-start border-4 border-success">
+          <li class="list-group-item">
             <strong>{{ visit.school_name }}</strong><br>
             <small class="text-muted">Visit Date: {{ visit.visit_date }} | Group Size: {{ visit.group_size }}</small>
           </li>
@@ -95,4 +158,5 @@
     {% endif %}
   </div>
 </div>
+
 {% endblock %}

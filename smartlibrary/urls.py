@@ -27,6 +27,7 @@ urlpatterns = [
     path('payments/', include('mpesa_express.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('', include('home.urls')), 
-
+    path('', include('mpesa_express.urls')),
+    
 ]
 

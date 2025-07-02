@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegisterForm
+# make sure this path matches your app
+from visits.models import VisitBooking
 
 def register_view(request):
     if request.method == 'POST':
@@ -36,6 +38,8 @@ def logout_view(request):
     messages.info(request, "You've been logged out.")
     return redirect('login')
 
+
 @login_required
 def profile_view(request):
-    return render(request, 'users/profile.html')
+    visits = VisitBooking.objects.filter(user=request.user).order_by('-visit_date')
+    return render(request, 'users/profile.html', {'visits': visits})
