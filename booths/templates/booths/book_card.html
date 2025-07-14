@@ -1,0 +1,35 @@
+{# booths/booth_card.html #}
+<div class="booth-card shadow-sm transition rounded-xl p-4 bg-white hover:shadow-lg border border-gray-100">
+  <div class="flex justify-between items-center mb-2">
+    <h3 class="text-lg font-semibold text-blue-800">
+      {{ booth.booth_type }} Booth #{{ booth.booth_number }}
+    </h3>
+    <span class="inline-block text-sm font-medium px-2 py-1 rounded-full
+      {% if booth.is_available %}
+        bg-green-100 text-green-700
+      {% else %}
+        bg-red-100 text-red-700
+      {% endif %}
+    ">
+      {% if booth.is_available %} Available {% else %} Booked {% endif %}
+    </span>
+  </div>
+
+  <ul class="text-sm text-gray-600 space-y-1 mb-3">
+    <li>📅 <strong>Date:</strong> {{ booth.date }}</li>
+    <li>⏰ <strong>Time Slot:</strong> {{ booth.time_slot }}</li>
+    <li>🏢 <strong>Floor:</strong> {{ booth.floor }}</li>
+  </ul>
+
+  {% if booth.is_available %}
+    <a href="{% url 'booths-book' %}?booth={{ booth.id }}"
+       class="inline-block bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-blue-700 transition">
+      📖 Book Now
+    </a>
+  {% else %}
+    <button disabled
+       class="inline-block bg-gray-300 text-gray-600 text-sm font-semibold px-4 py-2 rounded-full cursor-not-allowed">
+      Booked
+    </button>
+  {% endif %}
+</div>

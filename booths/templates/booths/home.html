@@ -1,30 +1,101 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container">
-  <h2 class="text-2xl font-bold mb-4 text-blue-700">📚 Available Reading Booths</h2>
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'booths/css/booths.css' %}">
 
-  {% if available_booths %}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {% for booth in available_booths %}
-        <div class="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition">
-          <h3 class="text-lg font-semibold text-gray-800">{{ booth.booth_type }} Booth #{{ booth.booth_number }}</h3>
-          <p class="text-sm text-gray-600 mb-1">📅 Date: {{ booth.date }}</p>
-          <p class="text-sm text-gray-600 mb-1">⏰ Time Slot: {{ booth.time_slot }}</p>
-          <p class="text-sm text-gray-600 mb-1">🏢 Floor: {{ booth.floor }}</p>
-          <p class="text-sm text-green-600 font-bold">{{ booth.is_available|yesno:"Available,Unavailable" }}</p>
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="text-red-600 mt-4">No booths available at the moment. Please check back later.</p>
-  {% endif %}
+<!-- Hero Section -->
+<section class="hero-section py-16 bg-gradient-to-r from-yellow-50 to-white text-center">
+  <div class="container mx-auto px-6">
+    <h1 class="text-4xl md:text-5xl font-bold text-gold mb-4">📚 Discover & Book Your Ideal Reading Booth</h1>
+    <p class="text-lg text-gray-700 max-w-xl mx-auto mb-6">
+      Choose from premium booths tailored for focused study. Filter, preview, and book instantly — all in one place.
+    </p>
+    <img src="https://images.pexels.com/photos/1290141/pexels-photo-1290141.jpeg" alt="Reading Booths"
+         class="mx-auto rounded-xl shadow-xl w-full max-w-3xl mb-8">
+    <a href="{% url 'booths-book' %}" class="gold-button px-6 py-3 text-lg">✨ Quick Book</a>
+  </div>
+</section>
 
-  <div class="mt-6">
-    <a href="{% url 'booths-book' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-      📖 Book a Booth Now
-    </a>
+<!-- Filter Bar -->
+<div class="container mx-auto mt-10 px-4">
+  <div class="flex flex-wrap gap-4 justify-center items-center bg-white p-6 rounded-2xl shadow-lg border border-gray-200 transition-all">
+    <select id="filter-floor" class="filter-dropdown bg-gray-50 text-black focus:ring-2 focus:ring-blue-400">
+      <option value="">🏢 All Floors</option>
+      <option value="First Floor">First Floor</option>
+      <option value="Second Floor">Second Floor</option>
+      <option value="Third Floor">Third Floor</option>
+    </select>
+
+    <select id="filter-status" class="filter-dropdown bg-gray-50 text-black focus:ring-2 focus:ring-blue-400">
+      <option value="">📌 All Statuses</option>
+      <option value="Available">Available</option>
+      <option value="Booked">Booked</option>
+    </select>
+
+    <select id="sort-by" class="filter-dropdown bg-gray-50 text-black focus:ring-2 focus:ring-blue-400">
+      <option value="">↕️ Sort By</option>
+      <option value="availability">Availability</option>
+      <option value="time">Time Slot</option>
+    </select>
   </div>
 </div>
 
+<!-- Booth Cards Grid -->
+<div class="container mx-auto px-6 mt-10">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    {% for booth in available_booths %}
+      <div class="booth-card shadow-lg rounded-2xl bg-white p-5 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+           data-floor="{{ booth.floor }}"
+           data-status="{{ booth.is_available|yesno:'Available,Booked' }}"
+           data-time="{{ booth.time_slot }}">
+
+        <!-- Booth Info -->
+        <div class="space-y-2">
+          <h3 class="text-2xl font-bold text-black">
+            {{ booth.booth_type }} Booth #{{ booth.booth_number }}
+          </h3>
+          <p class="text-gray-700 text-sm">📅 <strong>Date:</strong> {{ booth.date }}</p>
+          <p class="text-gray-700 text-sm">⏰ <strong>Time:</strong> {{ booth.time_slot }}</p>
+          <p class="text-gray-700 text-sm">🏢 <strong>Floor:</strong> {{ booth.floor }}</p>
+
+          <span class="status-badge {{ booth.is_available|yesno:'status-available,status-booked' }}">
+            {{ booth.is_available|yesno:"Available,Booked" }}
+          </span>
+
+          {% if booth.is_available %}
+            <a href="{% url 'booths-book' %}?booth={{ booth.id }}"
+               class="gold-button w-full mt-4 block text-center py-2 text-lg">
+              📖 Book Now
+            </a>
+          {% else %}
+            <p class="text-sm text-gray-500 mt-3">⏳ Booked. Try another slot.</p>
+          {% endif %}
+        </div>
+      </div>
+      
+    {% empty %}
+      <p class="text-red-600 text-center text-lg font-semibold mt-8 col-span-full">
+        🚫 No booths available at the moment. Please check back later.
+      </p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Fallback Book Button -->
+<div class="text-center my-10">
+  <a href="{% url 'booths-book' %}" class="gold-button px-6 py-3 text-lg">📖 Book a Booth Directly</a>
+</div>
+
+<!-- Modal Container -->
+<div id="booth-modal" class="modal hidden">
+  <div class="modal-content">
+    <button class="modal-close">&times;</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script src="{% static 'booths/js/booth-interaction.js' %}"></script>
 {% endblock %}

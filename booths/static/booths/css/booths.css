@@ -1,0 +1,237 @@
+/* ===== Global Theme ===== */
+body {
+  background: linear-gradient(120deg, #4dfc3d, #4753f3);
+  font-family: 'Segoe UI', sans-serif;
+  color: #000;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+/* ===== Headings ===== */
+h2, h3 {
+  color: #000;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Booth Grid ===== */
+.booth-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* ===== Booth Card ===== */
+.booth-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.booth-card:hover {
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  border-color: #13da1d;
+}
+
+/* ===== Booth Info ===== */
+.booth-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.booth-detail {
+  font-size: 1rem;
+  color: #222;
+  margin-bottom: 0.4rem;
+}
+
+/* ===== Status Badge ===== */
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  border-radius: 9999px;
+  font-weight: bold;
+  margin-top: 0.7rem;
+  text-transform: uppercase;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.status-available {
+  background-color: #37ec0a;
+  color: #000;
+  box-shadow: 0 0 10px rgba(55, 236, 10, 0.3);
+}
+
+.status-booked {
+  background-color: #fc3030;
+  color: #000;
+  box-shadow: 0 0 10px rgba(252, 48, 48, 0.3);
+}
+
+/* ===== Filter Bar ===== */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.filter-bar select,
+.filter-bar input {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #26f30a;
+  font-size: 0.95rem;
+  background-color: #390a91;
+  transition: border 0.3s ease;
+}
+
+.filter-bar select:focus {
+  border-color: #4753f3;
+}
+
+/* ===== Booking Modal ===== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.modal-content {
+  background: #270808;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  animation: slideFade 0.5s ease-in-out;
+  color: #000;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #0a1dc9;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+/* ===== Hero Section ===== */
+.hero-section {
+  background: linear-gradient(to right, #2f08db, #0ee054);
+  color: #000;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+/* ===== Gold Button ===== */
+.gold-button {
+  background-color: #f71616;
+  color: #000;
+  border-radius: 30px;
+  padding: 0.75rem 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  transition: all 0s.3s ease;
+  box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
+}
+
+.gold-button:hover {
+  background-color: #960b57;
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(117, 10, 240, 0.5);
+}
+
+/* ===== Animations ===== */
+@keyframes slideFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+/* ===== Mobile Responsiveness ===== */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .booth-card {
+    padding: 1rem;
+  }
+
+  .modal-content {
+    padding: 1.2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .gold-button {
+    width: 100%;
+    padding: 1rem;
+  }
+}

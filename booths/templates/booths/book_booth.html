@@ -1,64 +1,90 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% load crispy_forms_tags %}
 
 {% block content %}
+<!-- Link Custom CSS -->
+<link rel="stylesheet" href="{% static 'booths/css/booths.css' %}">
+
 <style>
-  body {
-    background: linear-gradient(to right, #f3e9dc, #fff8e1);
-  }
-  .gold-card {
-    background: #fffdf6;
+  .gold-form {
+    background: #fffef5;
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.15);
     border: 1px solid #f0e6ca;
   }
-  .gold-card h2 {
+
+  .gold-form h2 {
     font-family: 'Georgia', serif;
+    font-size: 2.3rem;
     color: #bfa03b;
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    text-align: center;
   }
-  .gold-button {
+
+  .form-button {
     background-color: #d4af37;
-    border: none;
     color: white;
-    padding: 10px 30px;
-    font-size: 18px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border: none;
     border-radius: 30px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background 0.3s ease, transform 0.2s ease;
   }
-  .gold-button:hover {
+
+  .form-button:hover {
     background-color: #c19b2d;
     transform: translateY(-2px);
   }
-  .gold-illustration {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-  }
 </style>
 
-<div class="container mt-5">
-  <div class="row align-items-center">
-    <div class="col-md-6">
-      <img src="https://cdn.pixabay.com/photo/2016/11/29/02/56/blonde-1866951_960_720.jpg" alt="https://cdn.pixabay.com/photo/2016/11/29/02/56/blonde-1866951_960_720.jpg" class="gold-illustration">
-    </div>
-    <div class="col-md-6">
-      <div class="gold-card">
-        <h2>Reserve Your Golden Reading Booth ✨</h2>
-        <form method="post">
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="gold-form mt-5">
+        <h2>📖 Reserve Your Reading Booth</h2>
+
+        <form method="post" id="booking-form">
           {% csrf_token %}
           {{ form|crispy }}
-          <button type="submit" class="gold-button mt-3">Book Now</button>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="form-button">✨ Book Now</button>
+          </div>
         </form>
+
+        <div id="form-message" class="text-center mt-3 text-danger fw-bold"></div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  // Autofill if booth ID is passed via query param (optional)
+  document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const boothId = urlParams.get("booth");
+
+    if (boothId) {
+      const boothSelect = document.getElementById("id_booth_number");
+      if (boothSelect) {
+        for (let option of boothSelect.options) {
+          if (option.value === boothId) {
+            option.selected = true;
+            break;
+          }
+        }
+      }
+    }
+
+    // Optional: display error message if form fails
+    const form = document.getElementById("booking-form");
+    form?.addEventListener("submit", () => {
+      const msg = document.getElementById("form-message");
+      msg.innerText = "";
+      msg.classList.remove("text-success", "text-danger");
+    });
+  });
+</script>
 {% endblock %}

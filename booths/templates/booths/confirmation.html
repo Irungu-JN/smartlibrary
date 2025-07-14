@@ -1,86 +1,114 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<!-- Link Custom CSS -->
+<link rel="stylesheet" href="{% static 'booths/css/booths.css' %}">
+
 <style>
-  body {
+  .confirmation-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
     background: linear-gradient(to right, #fff8dc, #fceabb);
+    padding: 2rem;
   }
 
   .confirmation-card {
-    max-width: 600px;
-    margin: 80px auto;
-    background-color: #fffdf5;
+    background: #fffef5;
     border-radius: 20px;
-    padding: 40px;
+    padding: 3rem;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-    animation: fadeInSlide 1s ease-out;
+    max-width: 550px;
+    width: 100%;
+    box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+    animation: popSlideFade 0.8s ease-out;
   }
 
   .confirmation-card h2 {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 2.5rem;
     color: #d4af37;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
   }
 
   .confirmation-card p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #444;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
   }
 
-  .animated-icon {
+  .icon-happy {
     font-size: 4rem;
     color: #d4af37;
-    animation: popIn 0.8s ease forwards;
+    margin-bottom: 1rem;
+    animation: popIn 0.6s ease forwards;
   }
 
-  .btn-custom {
-    background-color: #d4af37;
-    color: white;
-    font-weight: 600;
+  .btn-next {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
     border: none;
     border-radius: 30px;
-    padding: 12px 30px;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
-  .btn-custom:hover {
+  .btn-pay {
+    background-color: #d4af37;
+    color: white;
+  }
+
+  .btn-pay:hover {
     background-color: #c19b2d;
     transform: scale(1.05);
   }
 
-  @keyframes fadeInSlide {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .btn-secondary {
+    background-color: #eee;
+    color: #555;
+  }
+
+  .btn-secondary:hover {
+    background-color: #ddd;
+    transform: scale(1.03);
   }
 
   @keyframes popIn {
     from {
-      opacity: 0;
       transform: scale(0.5);
+      opacity: 0;
     }
     to {
-      opacity: 1;
       transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes popSlideFade {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
     }
   }
 </style>
 
-<div class="confirmation-card">
-  <div class="animated-icon">🎉</div>
-  <h2>Booking Confirmed!</h2>
-  <p>Your booth has been successfully booked and reserved just for you.</p>
+<div class="confirmation-wrapper">
+  <div class="confirmation-card">
+    <div class="icon-happy">🎉</div>
+    <h2>Booking Confirmed!</h2>
+    <p>Your booth has been successfully booked. We’ve reserved your perfect reading spot.</p>
 
-  <a href="{% url 'payment' %}" class="btn btn-custom w-100 mb-3">💳 Make Payment</a>
-  <a href="{% url 'booths-home' %}" class="btn btn-outline-secondary w-100">← Back to Booths</a>
+    <a href="{% url 'payment' %}" class="btn-next btn-pay">💳 Make Payment</a>
+    <a href="{% url 'booths-home' %}" class="btn-next btn-secondary">← Back to Booths</a>
+  </div>
 </div>
 {% endblock %}
